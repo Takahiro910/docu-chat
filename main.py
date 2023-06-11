@@ -59,7 +59,7 @@ class CustomSupabaseVectorStore(SupabaseVectorStore):
 
         documents = [doc for doc, _ in match_result]
 
-        return documents
+        return documents[0]
     
 
 embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
