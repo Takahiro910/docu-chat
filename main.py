@@ -163,7 +163,7 @@ elif user_choice == "説明":
                 """)
     st.write("## 構造")
     st.markdown("""
-                このアプリは以下の3つのサービス・ツールを利用しています。
+                このアプリは以下の4つのサービス・ツールを利用しています。
                 1. OpenAIのAPI
                 2. Supbase
                 3. LangChain
@@ -195,7 +195,7 @@ elif user_choice == "説明":
                 GPT-3のような大規模言語モデル（Large Language Model; LLM）の機能を拡張するライブラリ。\n
                 検索やドキュメントなどと連携したうえでLLMに回答させる、といったことに利用できます。便利。無料。
                 """)
-    st.write("## Streamlit Sharing")
+    st.write("### Streamlit Sharing")
     st.markdown("""
                 Streamlitは、機械学習系データやグラフのWEBアプリ化を簡単にするPythonライブラリ。\n
                 Streamlit Sharingは、そんなStreamlitで作られたアプリを簡単にデプロイできるプラットフォーム。ただし、オープン。
