@@ -3,7 +3,7 @@ import numpy as np
 
 def brain(supabase):
     ## List all documents
-    response = supabase.table("documents").select("name:metadata->>file_name, size:metadata->>file_size", count="exact").execute()
+    response = supabase.table("vectors").select("name:metadata->>file_name, size:metadata->>file_size", count="exact").execute()
     
     documents = response.data  # Access the data from the response
 
@@ -31,7 +31,7 @@ def brain(supabase):
 
 def delete_document(supabase, document_name):
     # Delete the document from the database
-    response = supabase.table("documents").delete().match({"metadata->>file_name": document_name}).execute()
+    response = supabase.table("vectors").delete().match({"metadata->>file_name": document_name}).execute()
     # Check if the deletion was successful
     if len(response.data) > 0:
         st.write(f"✂️ {document_name} was deleted.")
