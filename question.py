@@ -2,12 +2,21 @@ import anthropic
 import streamlit as st
 from streamlit_chat import message
 from streamlit.logger import get_logger
+from typing import Any, Dict, List
 from langchain.chains import ConversationalRetrievalChain
-from langchain.memory import AnswerConversationBufferMemory
+from langchain.memory import ConversationBufferMemory
 from langchain.llms import OpenAI
 from langchain.vectorstores import SupabaseVectorStore
 from llm import LANGUAGE_PROMPT
 from stats import add_usage
+
+
+class AnswerConversationBufferMemory(ConversationBufferMemory):
+    """ref https://github.com/hwchase17/langchain/issues/5630#issuecomment-1574222564"""
+    def save_context(self, inputs: Dict[str, Any], outputs: Dict[str, str]) -> None:
+        return super(AnswerConversationBufferMemory, self).save_context(
+            inputs, {'response': outputs['answer']})
+
 
 memory = AnswerConversationBufferMemory(
             memory_key="chat_history", return_messages=True)
