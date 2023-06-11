@@ -36,11 +36,11 @@ st.set_page_config(
 
 
 st.title("🧠 外付け脳（Proto）")
-st.markdown("資料を追加すると、その資料の内容についても答えられるようになります。")
+st.markdown("資料を追加すると、その資料の内容にもとづいて答えるようになります。")
 
 # Create a radio button for user to choose between adding knowledge or asking a question
 user_choice = st.radio(
-    "何する？", ('データを追加', 'チャットする', 'データ削除', "データ確認"), horizontal=True)
+    "何をしますか？", ('データを追加', 'チャットする', 'データ削除', "データ確認"), horizontal=True)
 
 st.markdown("---\n\n")
 
@@ -96,5 +96,45 @@ elif user_choice == 'データ削除':
 elif user_choice == 'データ確認':
     st.sidebar.title("設定")
     view_document(supabase)
+elif user_choice == "説明":
+    st.sidebar.title("設定")
+    st.write("## このアプリでできること")
+    st.markdown("""
+                データを追加すると、追加されたデータ群の中から近しいと思われるものを参照して質問に回答します。\n
+                一般的な質問などには回答できなくなっていますので、そういったものは\n
+                - GoogleのBard
+                - MicrosoftのBing
+                - OpenAIのChatGPT
+                などに聞いてください。
+                """)
+    st.write("## データの追加について")
+    st.markdown("""
+                追加されたデータはいくつかの塊（チャンク）に分割されてデータベースに格納されます。\n
+                たとえば前後半の2分割になった場合、質問の内容から後半のデータが参照されたが、肝心の回答は前半にあった場合、質問に対して得られた答えが正確でないということが起こりえます。\n\n
+                データ追加後に何分割されたかを確認し、チャンクサイズを調整して再アップロードしたり、チャンクサイズを意識してデータを作成するなどの運用が必要になりそうです。
+                """)
+    st.write("## 構造")
+    st.markdown("""
+                このアプリは以下の3つのサービス・ツールを利用しています。
+                1. OpenAIのAPI
+                2. Supbase
+                3. LangChain
+                """)
+    st.write("### OpenAIのAPI")
+    st.markdown("""
+                ChatGPTで一世を風靡しているモデルです。チャットの部分に使用しています。\n
+                有料ですが高機能かつAPIのため手軽で使いやすいです。
+                - gpt-3.5-turbo: $0.002 /1K tokens
+                - gpt-4: $0.03 /1K tokens
+                """)
+    st.write("### Supbase")
+    st.markdown("""
+                
+                """)
+    st.write("## ベース")
+    st.markdown("""
+                ベースはQuivrというオープンソースプロジェクト。\n
+                Docker-Composeで立ち上げるスタイルのままWEBアプリ化を断念してこの形式です。
+                """)
 
 st.markdown("---\n\n")
