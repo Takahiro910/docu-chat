@@ -7,5 +7,5 @@ def sidebar(supabase):
     st.sidebar.markdown(f"**Docs in DB:**  {number_of_docs}")
 
 def number_of_documents(supabase):
-    documents = supabase.table("documents").select("id", count="exact").execute()
+    documents = supabase.table("vectors").select("id", count="exact").execute()
     return documents.count

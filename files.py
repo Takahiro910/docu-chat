@@ -78,7 +78,7 @@ def file_uploader(supabase, vector_store):
 
 def file_already_exists(supabase, file):
     file_sha1 = compute_sha1_from_content(file.getvalue())
-    response = supabase.table("documents").select("id").eq("metadata->>file_sha1", file_sha1).execute()
+    response = supabase.table("vectors").select("id").eq("metadata->>file_sha1", file_sha1).execute()
     return len(response.data) > 0
 
 def file_to_uploaded_file(file: Any) -> Union[None, UploadedFile]:
