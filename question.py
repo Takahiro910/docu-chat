@@ -26,8 +26,6 @@ logger = get_logger(__name__)
 
 def count_tokens(question, model):
     count = f'Words: {len(question.split())}'
-    if model.startswith("claude"):
-        count += f' | Tokens: {anthropic.count_tokens(question)}'
     return count
 
 
