@@ -10,7 +10,7 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import SupabaseVectorStore
 from supabase import Client, create_client
 from explorer import view_document
-from stats import get_usage_today
+
 
 supabase_url = st.secrets.supabase_url
 supabase_key = st.secrets.supabase_service_key
@@ -29,54 +29,37 @@ if anthropic_api_key:
 
 # Set the theme
 st.set_page_config(
-    page_title="Quivr",
+    page_title="Akasha",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 
-st.title("🧠 Quivr - Your second brain 🧠")
-st.markdown("Store your knowledge in a vector store and query it with OpenAI's GPT-3/4.")
-if self_hosted == "false":
-    st.markdown('**📢 Note: In the public demo, access to functionality is restricted. You can only use the GPT-3.5-turbo model and upload files up to 1Mb. To use more models and upload larger files, consider self-hosting Quivr.**')
+st.title("🧠 外付け脳（Proto）")
+st.markdown("資料を追加すると、その資料の内容についても答えられるようになります。")
+
+# Create a radio button for user to choose between adding knowledge or asking a question
+user_choice = st.radio(
+    "何する？", ('データを追加', 'チャットする', 'データ削除', "データ確認"), horizontal=True)
 
 st.markdown("---\n\n")
-
-st.session_state["overused"] = False
-if self_hosted == "false":
-    usage = get_usage_today(supabase)
-    if usage > st.secrets.usage_limit:
-        st.markdown(
-            f"<span style='color:red'>You have used {usage} tokens today, which is more than your daily limit of {st.secrets.usage_limit} tokens. Please come back later or consider self-hosting.</span>", unsafe_allow_html=True)
-        st.session_state["overused"] = True
-    else:
-        st.markdown(f"<span style='color:blue'>Usage today: {usage} tokens out of {st.secrets.usage_limit}</span>", unsafe_allow_html=True)
-    st.write("---")
-    
-
-
 
 # Initialize session state variables
 if 'model' not in st.session_state:
     st.session_state['model'] = "gpt-3.5-turbo"
 if 'temperature' not in st.session_state:
-    st.session_state['temperature'] = 0.0
+    st.session_state['temperature'] = 0.1
 if 'chunk_size' not in st.session_state:
     st.session_state['chunk_size'] = 500
 if 'chunk_overlap' not in st.session_state:
     st.session_state['chunk_overlap'] = 0
 if 'max_tokens' not in st.session_state:
-    st.session_state['max_tokens'] = 256
+    st.session_state['max_tokens'] = 1024
 
-# Create a radio button for user to choose between adding knowledge or asking a question
-user_choice = st.radio(
-    "Choose an action", ('Add Knowledge', 'Chat with your Brain', 'Forget', "Explore"))
 
-st.markdown("---\n\n")
-
-if user_choice == 'Add Knowledge':
+if user_choice == 'データを追加':
     # Display chunk size and overlap selection only when adding knowledge
-    st.sidebar.title("Configuration")
+    st.sidebar.title("設定")
     st.sidebar.markdown(
         "Choose your chunk size and overlap for adding knowledge.")
     st.session_state['chunk_size'] = st.sidebar.slider(
@@ -91,32 +74,27 @@ if user_choice == 'Add Knowledge':
         file_uploader(supabase, vector_store)
     with col2:
         url_uploader(supabase, vector_store)
-elif user_choice == 'Chat with your Brain':
+elif user_choice == 'チャットする':
     # Display model and temperature selection only when asking questions
-    st.sidebar.title("Configuration")
+    st.sidebar.title("設定")
     st.sidebar.markdown(
-        "Choose your model and temperature for asking questions.")
-    if self_hosted != "false":
-        st.session_state['model'] = st.sidebar.selectbox(
-        "Select Model", models, index=(models).index(st.session_state['model']))
-    else:
-        st.sidebar.write("**Model**: gpt-3.5-turbo")
-        st.sidebar.write("**Self Host to unlock more models such as claude-v1 and GPT4**")
-        st.session_state['model'] = "gpt-3.5-turbo"
+        "モデル、温度、トークン上限を選択してください。")
+
+    st.session_state['model'] = st.sidebar.selectbox(
+    "Select Model", models, index=(models).index(st.session_state['model']))
+
     st.session_state['temperature'] = st.sidebar.slider(
         "Select Temperature", 0.0, 1.0, st.session_state['temperature'], 0.1)
-    if st.secrets.self_hosted != "false":
-        st.session_state['max_tokens'] = st.sidebar.slider(
-            "Select Max Tokens", 256, 2048, st.session_state['max_tokens'], 1)
-    else:
-        st.session_state['max_tokens'] = 256
+
+    st.session_state['max_tokens'] = st.sidebar.slider(
+        "Select Max Tokens", 256, 4096, st.session_state['max_tokens'], 1)
     
     chat_with_doc(st.session_state['model'], vector_store, stats_db=supabase)
-elif user_choice == 'Forget':
-    st.sidebar.title("Configuration")
+elif user_choice == 'データ削除':
+    st.sidebar.title("設定")
     brain(supabase)
-elif user_choice == 'Explore':
-    st.sidebar.title("Configuration")
+elif user_choice == 'データ確認':
+    st.sidebar.title("設定")
     view_document(supabase)
 
 st.markdown("---\n\n")
