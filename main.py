@@ -107,14 +107,13 @@ elif user_choice == 'Chat with your Brain':
         "Select Temperature", 0.0, 1.0, st.session_state['temperature'], 0.1)
     if st.secrets.self_hosted != "false":
         st.session_state['max_tokens'] = st.sidebar.slider(
-            "Select Max Tokens", 256, 2048, st.session_state['max_tokens'], 2048)
+            "Select Max Tokens", 256, 2048, st.session_state['max_tokens'], 1)
     else:
         st.session_state['max_tokens'] = 256
     
     chat_with_doc(st.session_state['model'], vector_store, stats_db=supabase)
 elif user_choice == 'Forget':
     st.sidebar.title("Configuration")
-
     brain(supabase)
 elif user_choice == 'Explore':
     st.sidebar.title("Configuration")
