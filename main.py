@@ -31,7 +31,7 @@ class CustomSupabaseVectorStore(SupabaseVectorStore):
         self, 
         query: str, 
         table: str = "match_vectors", 
-        k: int = 4, 
+        k: int = 3, 
         threshold: float = 0.5, 
         **kwargs: Any
     ) -> List[Document]:
@@ -59,7 +59,7 @@ class CustomSupabaseVectorStore(SupabaseVectorStore):
 
         documents = [doc for doc, _ in match_result]
 
-        return documents[0]
+        return documents
     
 
 embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
