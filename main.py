@@ -78,7 +78,7 @@ st.set_page_config(
 )
 
 
-st.title("🧠 外付け脳（Proto）")
+st.title("📄📢 Docu-Chat (Proto)")
 st.markdown("資料を追加すると、その資料の内容にもとづいて答えるようになります。")
 
 # Create a radio button for user to choose between adding knowledge or asking a question
@@ -144,17 +144,22 @@ elif user_choice == "説明":
     st.write("## このアプリでできること")
     st.markdown("""
                 データを追加すると、追加されたデータ群の中から近しいと思われるものを参照して質問に回答します。\n
+                **チャットの下にはその回答の基となったデータソースも表示しています。**\n
                 一般的な質問などには回答できなくなっていますので、そういったものは\n
                 - GoogleのBard
                 - MicrosoftのBing
                 - OpenAIのChatGPT\n
                 などに聞いてください。
                 """)
+    st.write("中身は[これ](https://prtimes.jp/main/html/rd/p/000000078.000092586.html)に近いかもしれないです。とても。")
     st.write("## データの追加について")
+    st.warning("""
+                現在だれでもアクセスできる状態ですので、**機密情報のアップロードは控えてください。デモ用に自作したデータやネット上の最新論文などで効果を確認してください。**
+                """, icon="⚠️")
     st.markdown("""
                 追加されたデータはいくつかの塊（チャンク）に分割されてデータベースに格納されます。\n
-                たとえば前後半の2分割になった場合、質問の内容から後半のデータが参照されたが、肝心の回答は前半にあった場合、質問に対して得られた答えが正確でないということが起こりえます。\n\n
-                データ追加後に何分割されたかを確認し、チャンクサイズを調整して再アップロードしたり、チャンクサイズを意識してデータを作成するなどの運用が必要になりそうです。
+                たとえば前後半の2分割になった場合、質問の内容から後半のデータが参照されたが、肝心の回答は前半にあった場合、質問に対して得られた答えが正確でないということが起こりえます。\n
+                データ追加後に何分割されたかを確認し、:red[チャンクサイズを調整]して再アップロードしたり、**:red[チャンクサイズを意識してデータを作成する]**などの運用が必要になりそうです。
                 """)
     st.write("## 構造")
     st.markdown("""
@@ -162,6 +167,7 @@ elif user_choice == "説明":
                 1. OpenAIのAPI
                 2. Supbase
                 3. LangChain
+                4. Streamlit Sharing
                 """)
     st.write("### OpenAIのAPI")
     st.markdown("""
@@ -172,12 +178,39 @@ elif user_choice == "説明":
                 """)
     st.write("### Supabase")
     st.markdown("""
-                
+                データベースに使用しています。\n
+                Postgres（リレーショナルデータベース）のバックエンドを簡単に構築できるオープンソースなサービス。現在は無料版を使用していますが、データ容量が増えるとProプランに切り替えが必要かもしれません。\n
+                - Free Plan: $0
+                    - 500MBのデータベース
+                    - 1GBのファイルストレージ
+                    - 50MBのファイルアップロードなど。
+                - Pro Plan: $25
+                    - 8GBのデータベース
+                    - 100GBのファイルストレージ
+                    - 5GBのファイルアップロードなど。\n
+                Firebaseのalternativeらしいですが、Firebaseを詳しくは知りません。
+                """)
+    st.write("### LangChain")
+    st.markdown("""
+                GPT-3のような大規模言語モデル（Large Language Model; LLM）の機能を拡張するライブラリ。\n
+                検索やドキュメントなどと連携したうえでLLMに回答させる、といったことに利用できます。便利。無料。
+                """)
+    st.write("## Streamlit Sharing")
+    st.markdown("""
+                Streamlitは、機械学習系データやグラフのWEBアプリ化を簡単にするPythonライブラリ。\n
+                Streamlit Sharingは、そんなStreamlitで作られたアプリを簡単にデプロイできるプラットフォーム。ただし、オープン。
+                """)
+    st.write("## 社内実装への課題")
+    st.markdown("""
+                1. 明確な活用方法の提案
+                2. 運用コスト
+                3. 実装方法
+                4. 機密データの安全性
                 """)
     st.write("## ベース")
     st.markdown("""
                 ベースはQuivrというオープンソースプロジェクト。\n
-                Docker-Composeで立ち上げるスタイルのままWEBアプリ化を断念してこの形式です。
+                Docker-Composeで立ち上げるスタイルのままWEBアプリ化に挫折し、Streamlit形式に改編しています。
                 """)
-
+    st.write("[Quivr](https://github.com/stangirard/quivr)")
 st.markdown("---\n\n")
