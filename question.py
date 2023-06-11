@@ -45,8 +45,6 @@ def chat_with_doc(model, vector_store: SupabaseVectorStore, stats_db):
     with columns[2]:
         clear_history = st.button("チャット履歴を消す", type='secondary')
     
-    
-    
     if clear_history:
         # Clear memory in Langchain
         memory.clear()
@@ -85,7 +83,7 @@ def chat_with_doc(model, vector_store: SupabaseVectorStore, stats_db):
                     ---
                     Source:
                     """)
-        st.write(model_response["source_documents"][0])
+        st.write(model_response["source_documents"])
         
     if count_button:
         st.write(count_tokens(question, model))
