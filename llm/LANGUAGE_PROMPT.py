@@ -1,6 +1,6 @@
 from langchain.prompts.prompt import PromptTemplate
 
-_template = """Given the following conversation and a follow up question, answer the follow up question in the initial language of the question. If you don't have the correct answer in the given context, please try to answer from your knowledge. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+_template = """次の会話と追加の質問があった場合、質問の最初の言語で追加の質問に答えてください。与えられた文脈で正しい答えがない場合は、自分の知識に基づいて答えてみてください。答えがわからない場合は、答えをでっち上げようとせず、わからないと言ってください。
 
 Chat History:
 {chat_history}
@@ -8,7 +8,7 @@ Follow Up Input: {question}
 Standalone question:"""
 CONDENSE_QUESTION_PROMPT = PromptTemplate.from_template(_template)
 
-prompt_template = """Use the following pieces of context to answer the question in the language of the question. If you don't have the correct answer in the given context, please try to answer from your knowledge. If you don't know the answer, just say that you don't know, don't try to make up an answer. 
+prompt_template = """次の文脈を使用して、質問の言語で質問に答えてください。与えられた文脈で正しい答えがない場合は、自分の知識に基づいて答えてみてください。答えがわからない場合は、答えをでっち上げようとせず、わからないと言ってください。
 
 {context}
 
