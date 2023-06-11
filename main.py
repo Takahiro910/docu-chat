@@ -24,15 +24,12 @@ self_hosted = st.secrets.self_hosted
 
 class CustomSupabaseVectorStore(SupabaseVectorStore):
     '''A custom vector store that uses the match_vectors table instead of the vectors table.'''
-    user_id: str
-    def __init__(self, client: Client, embedding: OpenAIEmbeddings, table_name: str, user_id: str = "none"):
+    def __init__(self, client: Client, embedding: OpenAIEmbeddings, table_name: str):
         super().__init__(client, embedding, table_name)
-        self.user_id = user_id
     
     def similarity_search(
         self, 
         query: str, 
-        user_id: str = "none",
         table: str = "match_vectors", 
         k: int = 4, 
         threshold: float = 0.5, 
@@ -45,7 +42,6 @@ class CustomSupabaseVectorStore(SupabaseVectorStore):
             {
                 "query_embedding": query_embedding,
                 "match_count": k,
-                "p_user_id": self.user_id,
             },
         ).execute()
 
