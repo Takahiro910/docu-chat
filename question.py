@@ -77,9 +77,9 @@ def chat_with_doc(model, vector_store: SupabaseVectorStore, stats_db):
         for speaker, text in st.session_state['chat_history']:
             # st.markdown(f"**{speaker}:** {text}")
             if speaker == "You":
-                is_user == True
+                is_user = True
             else:
-                is_user == False
+                is_user = False
             message(text, is_user=is_user)
         st.markdown("""
                     ---
