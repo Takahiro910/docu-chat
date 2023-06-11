@@ -55,36 +55,32 @@ def chat_with_doc(model, vector_store: SupabaseVectorStore, stats_db):
 
     if button:
         qa = None
-        if not st.session_state["overused"]:
-            add_usage(stats_db, "chat", question, {"model": model, "temperature": st.session_state['temperature']})
-            ConversationalRetrievalChain.prompts = LANGUAGE_PROMPT
-            
-            logger.info('Using OpenAI model %s', model)
-            qa = ConversationalRetrievalChain.from_llm(
-                OpenAI(
-                    model_name=st.session_state['model'], openai_api_key=openai_api_key, temperature=st.session_state['temperature'], max_tokens=st.session_state['max_tokens']), vector_store.as_retriever(), memory=memory, verbose=True, return_source_documents=True)
-            
-            st.session_state['chat_history'].append(("You", question))
+        add_usage(stats_db, "chat", question, {"model": model, "temperature": st.session_state['temperature']})
+        ConversationalRetrievalChain.prompts = LANGUAGE_PROMPT
+        
+        logger.info('Using OpenAI model %s', model)
+        qa = ConversationalRetrievalChain.from_llm(
+            OpenAI(
+                model_name=st.session_state['model'], openai_api_key=openai_api_key, temperature=st.session_state['temperature'], max_tokens=st.session_state['max_tokens']), vector_store.as_retriever(), memory=memory, verbose=True, return_source_documents=True)
+        
+        st.session_state['chat_history'].append(("You", question))
 
-            # Generate model's response and add it to chat history
-            model_response = qa({"question": question})
-            logger.info('Result: %s', model_response)
+        # Generate model's response and add it to chat history
+        model_response = qa({"question": question})
+        logger.info('Result: %s', model_response)
 
-            st.session_state['chat_history'].append(("Akasha", model_response["answer"] & "\n" & model_response["source_documents"]))
+        st.session_state['chat_history'].append(("Akasha", model_response["answer"] & "\n" & model_response["source_documents"]))
 
-            # Display chat history
-            st.empty()
-            is_user = True
-            for speaker, text in st.session_state['chat_history']:
-                # st.markdown(f"**{speaker}:** {text}")
-                if speaker == "You":
-                    is_user == True
-                else:
-                    is_user == False
-                message(text, is_user=is_user)
-                    
-        else:
-            st.error("You have used all your free credits. Please try again later or self host.")
+        # Display chat history
+        st.empty()
+        is_user = True
+        for speaker, text in st.session_state['chat_history']:
+            # st.markdown(f"**{speaker}:** {text}")
+            if speaker == "You":
+                is_user == True
+            else:
+                is_user == False
+            message(text, is_user=is_user)
         
     if count_button:
         st.write(count_tokens(question, model))
