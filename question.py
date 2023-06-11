@@ -69,7 +69,7 @@ def chat_with_doc(model, vector_store: SupabaseVectorStore, stats_db):
         model_response = qa({"question": question})
         logger.info('Result: %s', model_response)
 
-        st.session_state['chat_history'].append(("Akasha", (model_response["answer"], model_response["source_documents"][0])))
+        st.session_state['chat_history'].append(("Akasha", model_response["answer"], ))
 
         # Display chat history
         st.empty()
@@ -81,6 +81,11 @@ def chat_with_doc(model, vector_store: SupabaseVectorStore, stats_db):
             else:
                 is_user == False
             message(text, is_user=is_user)
+        st.markdown("""
+                    ---
+                    Source:
+                    """)
+        st.write(model_response["source_documents"][0])
         
     if count_button:
         st.write(count_tokens(question, model))
