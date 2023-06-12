@@ -78,12 +78,6 @@ st.set_page_config(
 st.title("📄📢 Docu-Chat (Proto)")
 st.markdown("資料を追加すると、その資料の内容にもとづいて答えるようになります。")
 
-# Create a radio button for user to choose between adding knowledge or asking a question
-user_choice = st.radio(
-    "何をしますか？", ('データを追加', 'チャットする', 'データ削除', "データ確認", "説明"), index=4, horizontal=True)
-
-st.markdown("---\n\n")
-
 # Initialize session state variables
 if 'model' not in st.session_state:
     st.session_state['model'] = "gpt-3.5-turbo"
@@ -95,6 +89,11 @@ if 'chunk_overlap' not in st.session_state:
     st.session_state['chunk_overlap'] = 0
 if 'max_tokens' not in st.session_state:
     st.session_state['max_tokens'] = 1024
+
+
+# Create a radio button for user to choose between adding knowledge or asking a question
+user_choice = st.sidebar.radio(
+    "何をしますか？", ('データを追加', 'チャットする', 'データ削除', "データ確認", "説明"), index=4)
 
 
 if user_choice == 'データを追加':
