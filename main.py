@@ -77,6 +77,7 @@ st.set_page_config(
 
 st.title("📄📢 Docu-Chat (Proto)")
 st.markdown("資料を追加すると、その資料の内容にもとづいて答えるようになります。")
+st.markdown("---")
 
 # Initialize session state variables
 if 'model' not in st.session_state:
