@@ -80,7 +80,7 @@ st.markdown("資料を追加すると、その資料の内容にもとづいて�
 
 # Create a radio button for user to choose between adding knowledge or asking a question
 user_choice = st.radio(
-    "何をしますか？", ('データを追加', 'チャットする', 'データ削除', "データ確認", "説明"), horizontal=True)
+    "何をしますか？", ('データを追加', 'チャットする', 'データ削除', "データ確認", "説明"), index=4, horizontal=True)
 
 st.markdown("---\n\n")
 
